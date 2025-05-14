@@ -47,7 +47,7 @@ jobs:
 
       - name: Setup pcov
         run: |
-          sudo apt-fast install -y php8.3-pcov
+          sudo apt-get install -y php8.3-pcov
           sudo phpenmod -s cli pcov
 
       - name: Initialize Composer
@@ -176,7 +176,7 @@ jobs:
 
       - name: Setup pcov
         run: |
-          sudo apt-fast install -y php8.3-pcov
+          sudo apt-get install -y php8.3-pcov
           sudo phpenmod -s cli pcov
 
       - name: Setup codeception
