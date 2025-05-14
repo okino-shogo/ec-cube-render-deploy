@@ -43,6 +43,7 @@ use Eccube\Stream\Filter\ConvertLineFeedFilter;
 use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
+use HTMLPurifier;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -127,6 +128,8 @@ class CsvImportController extends AbstractCsvImportController
 
     protected $currentLineNo = 1;
 
+    private HTMLPurifier $purifier;
+
     /**
      * CsvImportController constructor.
      *
@@ -142,7 +145,7 @@ class CsvImportController extends AbstractCsvImportController
      * @param TaxRuleRepository $taxRuleRepository
      * @param BaseInfoRepository $baseInfoRepository
      * @param ValidatorInterface $validator
-     *
+     * @param HTMLPurifier $purifier
      * @throws \Exception
      */
     public function __construct(
@@ -157,7 +160,8 @@ class CsvImportController extends AbstractCsvImportController
         ProductRepository $productRepository,
         TaxRuleRepository $taxRuleRepository,
         BaseInfoRepository $baseInfoRepository,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        HTMLPurifier $purifier
     ) {
         $this->deliveryDurationRepository = $deliveryDurationRepository;
         $this->saleTypeRepository = $saleTypeRepository;
@@ -171,6 +175,7 @@ class CsvImportController extends AbstractCsvImportController
         $this->taxRuleRepository = $taxRuleRepository;
         $this->BaseInfo = $baseInfoRepository->get();
         $this->validator = $validator;
+        $this->purifier = $purifier;
     }
 
     /**
@@ -319,7 +324,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         if (isset($row[$headerByKey['description_list']])) {
                             if (StringUtil::isNotBlank($row[$headerByKey['description_list']])) {
-                                $Product->setDescriptionList(StringUtil::trimAll($row[$headerByKey['description_list']]));
+                                $Product->setDescriptionList($this->purifier->purify(StringUtil::trimAll($row[$headerByKey['description_list']])));
                             } else {
                                 $Product->setDescriptionList(null);
                             }
@@ -337,7 +342,7 @@ class CsvImportController extends AbstractCsvImportController
 
                                     return $this->renderWithError($form, $headers);
                                 } else {
-                                    $Product->setDescriptionDetail(StringUtil::trimAll($row[$headerByKey['description_detail']]));
+                                    $Product->setDescriptionDetail($this->purifier->purify(StringUtil::trimAll($row[$headerByKey['description_detail']])));
                                 }
                             } else {
                                 $Product->setDescriptionDetail(null);
@@ -354,7 +359,7 @@ class CsvImportController extends AbstractCsvImportController
 
                         if (isset($row[$headerByKey['free_area']])) {
                             if (StringUtil::isNotBlank($row[$headerByKey['free_area']])) {
-                                $Product->setFreeArea(StringUtil::trimAll($row[$headerByKey['free_area']]));
+                                $Product->setFreeArea($this->purifier->purify(StringUtil::trimAll($row[$headerByKey['free_area']])));
                             } else {
                                 $Product->setFreeArea(null);
                             }
