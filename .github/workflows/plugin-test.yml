@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -93,7 +93,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
@@ -159,7 +159,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -240,7 +240,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
@@ -306,7 +306,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -387,7 +387,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
@@ -453,7 +453,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -537,7 +537,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
