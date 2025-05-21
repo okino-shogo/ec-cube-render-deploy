@@ -199,6 +199,7 @@ class EF09ThrottlingCest
 
     private function contactComplete(AcceptanceTester $I)
     {
+        $I->wait(1);
         $I->click('div.ec-contactConfirmRole div.ec-RegisterRole__actions button.ec-blockBtn--action');
     }
 
