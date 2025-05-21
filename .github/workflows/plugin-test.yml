@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -93,7 +93,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
@@ -159,7 +159,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -207,12 +207,10 @@ jobs:
         uses: actions/checkout@master
 
       - name: Get Composer Cache Directory
+        uses: actions/cache@v4
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -242,7 +240,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
@@ -308,7 +306,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -357,11 +355,9 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
+        uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -391,7 +387,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
@@ -457,7 +453,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-22.04 ]
+        operating-system: [ ubuntu-24.04 ]
         php: [ '8.1' ]
         db: [ pgsql, mysql ]
         method:
@@ -509,11 +505,9 @@ jobs:
 
       - name: Get Composer Cache Directory
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v4
+        uses: actions/cache@v4
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: ${{ github.workspace }}/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -543,7 +537,7 @@ jobs:
         env:
           PGPASSWORD: 'password'
         run: |
-          sudo apt-fast install -y postgresql-client
+          sudo apt-get install -y postgresql-client
           psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='test';"
 
       - name: Update baseinfo with mysql
