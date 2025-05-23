@@ -406,7 +406,6 @@ class Generator
             ->setUpdateDate(new \DateTime())
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->realText());
-        $Product->extendedParameter = 'aaaa';
 
         $this->entityManager->persist($Product);
         $this->entityManager->flush();
