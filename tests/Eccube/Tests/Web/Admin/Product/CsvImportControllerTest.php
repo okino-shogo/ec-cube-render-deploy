@@ -132,7 +132,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $fp = fopen($filepath, 'w');
         if ($fp !== false) {
             foreach ($csv as $row) {
-                fputcsv($fp, $row);
+                fputcsv($fp, $row, ',', '"', '\\');
             }
         } else {
             throw new \Exception('create error!');
