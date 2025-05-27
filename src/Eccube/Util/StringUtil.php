@@ -181,6 +181,7 @@ class StringUtil
             if ($diff->days <= 31) {
                 return $diff->days.'日前';
             }
+
             // return $date->format("Y/m/d H:i");
             return $date->format('Y/m/d');
         }
@@ -270,7 +271,7 @@ class StringUtil
             $value = preg_replace('/　/', '', $value);
         }
 
-        $value = trim($value);
+        $value = trim($value ?? '');
         if (strlen($value) > 0) {
             return false;
         }
