@@ -42,7 +42,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->productRepo = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
+        $this->productRepo = $this->entityManager->getRepository(Product::class);
         $this->categoryRepo = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
         $this->filepath = __DIR__.'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
@@ -165,7 +165,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // ProductCategoryTest
-        //カテゴリーIDs
+        // カテゴリーIDs
         foreach ($csv as $csvRow) {
             $csvCat[md5($csvRow[2])] = $csvRow[10];
         }
@@ -177,9 +177,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             // expected categories is
             $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
             $actualIds = [];
-            /** @var \Eccube\Entity\Product $Product */
+            /** @var Product $Product */
             foreach ($Product->getProductCategories() as $ProductCategory) {
-                /** @var \Eccube\Entity\ProductCategory $ProductCategory */
+                /* @var \Eccube\Entity\ProductCategory $ProductCategory */
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
                 $this->actual = $ProductCategory->getCategoryId();
@@ -339,7 +339,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->verify('class_category_id2 は 6');
 
         // ProductCategoryTest
-        //カテゴリーIDs
+        // カテゴリーIDs
         foreach ($csv as $csvRow) {
             $csvCat[md5($csvRow[2])] = $csvRow[10];
         }
@@ -436,9 +436,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertEquals($beforeProduct->getDescriptionDetail(), $afterProduct->getDescriptionDetail());
     }
 
-    //======================================================================
+    // ======================================================================
     // CATEGORY Import Test
-    //======================================================================
+    // ======================================================================
 
     /**
      * Import csv test
@@ -568,7 +568,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->filepath = __DIR__.'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
-        /** @var \Faker\Generator $faker */
+        /** @var Generator $faker */
         $faker = $this->getFaker();
         $categoryName = 'CategoryNameTest';
         $csv = [
@@ -587,9 +587,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertMatchesRegularExpression('/CSVファイルをアップロードしました/u', $crawler->filter('div.alert-success')->text());
     }
 
-    //======================================================================
-//    CSV export template test
-    //======================================================================
+    // ======================================================================
+    //    CSV export template test
+    // ======================================================================
 
     public function testCsvTemplateWithCategory()
     {
@@ -609,9 +609,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    //======================================================================
+    // ======================================================================
     //    CSV import product test
-    //======================================================================
+    // ======================================================================
 
     /**
      * Check the imported products with csv column is missed
@@ -630,7 +630,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->actual = count($Products);
         $this->verify();
         // ProductCategoryTest
-        //カテゴリーIDs
+        // カテゴリーIDs
         foreach ($csv as $csvRow) {
             $csvCat[md5($csvRow[2])] = $csvRow[10];
         }
@@ -642,9 +642,9 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             // expected categories is
             $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
             $actualIds = [];
-            /** @var \Eccube\Entity\Product $Product */
+            /** @var Product $Product */
             foreach ($Product->getProductCategories() as $ProductCategory) {
-                /** @var \Eccube\Entity\ProductCategory $ProductCategory */
+                /* @var \Eccube\Entity\ProductCategory $ProductCategory */
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
                 $this->actual = $ProductCategory->getCategoryId();
@@ -700,6 +700,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @param $id
      * @param $expectedMessage
+     *
      * @dataProvider dataProductIdProvider
      */
     public function testImportProductWithIdIsWrong($id, $expectedMessage)
@@ -723,6 +724,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * @param $status
      * @param $expectedMessage
+     *
      * @dataProvider dataStatusProvider
      */
     public function testImportProductWithPublicIdIsIncorrect($status, $expectedMessage)
@@ -954,10 +956,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
         $csv[] = [$Product->getId(),
-                  1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
-                  $ProductClass->getClassCategory1()->getId(),
-                  $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
-                  '0'           // 商品規格非表示
+            1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+            $ProductClass->getClassCategory1()->getId(),
+            $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
+            '0',           // 商品規格非表示
         ];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
@@ -986,10 +988,10 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
         $csv[] = ['商品ID', '公開ステータス(ID)', '商品名', '販売種別(ID)', '在庫数無制限フラグ', '販売価格', '規格分類1(ID)', '規格分類2(ID)', '商品規格表示フラグ'];
         $csv[] = [$Product->getId(),
-                  1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
-                  $ProductClass->getClassCategory1()->getId(),
-                  $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
-                  '1'           // 商品規格表示
+            1, '商品名'.$faker->word.'商品名', 1, 1, $faker->randomNumber(5),
+            $ProductClass->getClassCategory1()->getId(),
+            $ProductClass->getClassCategory2() ? $ProductClass->getClassCategory2()->getId() : null,
+            '1',           // 商品規格表示
         ];
         $this->filepath = $this->createCsvFromArray($csv);
         $crawler = $this->scenario();
