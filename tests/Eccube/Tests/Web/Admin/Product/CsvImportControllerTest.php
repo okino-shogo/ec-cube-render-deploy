@@ -244,7 +244,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         foreach ($Products as $Product) {
             $ProductClasses = $Product->getProductClasses();
             foreach ($ProductClasses as $ProductClass) {
-                if (preg_match('/fork-0[0-9]-new/', $ProductClass->getCode())) {
+                if (preg_match('/fork-0[0-9]-new/', $ProductClass->getCode() ?? '')) {
                     $newCount++;
                 }
             }

@@ -157,7 +157,7 @@ class EccubeExtension extends AbstractExtension
         $currency = $this->eccubeConfig['currency'];
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        return $formatter->formatCurrency($number, $currency);
+        return $formatter->formatCurrency($number ?? 0, $currency);
     }
 
     /**
