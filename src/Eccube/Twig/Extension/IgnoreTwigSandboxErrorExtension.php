@@ -48,7 +48,7 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
      * @param $ignoreMissing
      * @param $sandboxed
      *
-     * @return string|void
+     * @return string|null
      *
      * @throws LoaderError
      * @throws SecurityError
@@ -71,6 +71,8 @@ class IgnoreTwigSandboxErrorExtension extends AbstractExtension
                 if (!$sandbox->isSandboxedGlobally()) {
                     $sandbox->disableSandbox();
                 }
+
+                return null;
             }
         }
     }
