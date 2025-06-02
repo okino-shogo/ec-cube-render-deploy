@@ -222,6 +222,7 @@ class OrderManagePage extends AbstractAdminPageStyleGuide
 
     public function 一括メール送信_キャンセル()
     {
+        $this->tester->wait(1);
         $this->tester->click(['id' => 'bulkSendMail']);
         $this->tester->waitForElementVisible(['id' => 'sentUpdateModal']);
         $this->tester->wait(1);

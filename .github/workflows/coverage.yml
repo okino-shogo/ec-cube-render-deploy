@@ -1,21 +1,12 @@
 name: Coverage
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
 jobs:
   phpunit:
     name: PHPUnit
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -47,7 +38,7 @@ jobs:
 
       - name: Setup pcov
         run: |
-          sudo apt-fast install -y php8.3-pcov
+          sudo apt-get install -y php8.3-pcov
           sudo phpenmod -s cli pcov
 
       - name: Initialize Composer
@@ -82,7 +73,7 @@ jobs:
           path: coverage1.xml
   codeception:
     name: Codeception
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -176,7 +167,7 @@ jobs:
 
       - name: Setup pcov
         run: |
-          sudo apt-fast install -y php8.3-pcov
+          sudo apt-get install -y php8.3-pcov
           sudo phpenmod -s cli pcov
 
       - name: Setup codeception
