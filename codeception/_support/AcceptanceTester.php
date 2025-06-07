@@ -12,6 +12,7 @@
  */
 
 use Codeception\Scenario;
+use Codeception\Step\Action;
 use Codeception\Util\Fixtures;
 use Eccube\Common\Constant;
 use Facebook\WebDriver\WebDriverBy;
@@ -279,7 +280,7 @@ class AcceptanceTester extends Codeception\Actor
     public function waitForText(string $text, int $timeout = 10, $selector = null): void
     {
         $this->wait(0.1); // XXX 画面遷移直後は selector の参照に失敗するため wait を入れる
-        $this->getScenario()->runStep(new Codeception\Step\Action('waitForText', func_get_args()));
+        $this->getScenario()->runStep(new Action('waitForText', func_get_args()));
     }
 
     /**
@@ -292,5 +293,18 @@ class AcceptanceTester extends Codeception\Actor
         $this->wait(1); // XXX WebDriver::amOnPage() の前に wait を入れないと画面遷移しない場合がある
         $this->getScenario()->runStep(new Codeception\Step\Condition('amOnPage', func_get_args()));
         $this->wait(1); // XXX 画面遷移直後は selector の参照に失敗する場合があるため wait を入れる
+    }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @param string|array $link
+     *
+     * @see \Codeception\Module\WebDriver::click()
+     */
+    public function click($link, $context = null): void
+    {
+        $this->getScenario()->runStep(new Action('click', func_get_args()));
+        $this->wait(1); // XXX click 直後は selector の参照に失敗するため wait を入れる
     }
 }
