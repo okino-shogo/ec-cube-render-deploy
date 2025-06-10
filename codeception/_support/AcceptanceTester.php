@@ -300,4 +300,17 @@ class AcceptanceTester extends Actor
         $this->getScenario()->runStep(new Condition('amOnPage', func_get_args()));
         $this->wait(1); // XXX 画面遷移直後は selector の参照に失敗する場合があるため wait を入れる
     }
+
+    /**
+     * AcceptanceTesterActions から移植
+     *
+     * @param string|array $link
+     *
+     * @see \Codeception\Module\WebDriver::click()
+     */
+    public function click($link, $context = null): void
+    {
+        $this->getScenario()->runStep(new Action('click', func_get_args()));
+        $this->wait(1); // XXX click 直後は selector の参照に失敗するため wait を入れる
+    }
 }
