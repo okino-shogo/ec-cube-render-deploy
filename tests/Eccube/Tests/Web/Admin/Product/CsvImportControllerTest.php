@@ -14,13 +14,16 @@
 namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Category;
 use Eccube\Entity\Product;
+use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Faker\Generator;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -43,7 +46,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         parent::setUp();
         $this->productRepo = $this->entityManager->getRepository(Product::class);
-        $this->categoryRepo = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
+        $this->categoryRepo = $this->entityManager->getRepository(Category::class);
         $this->filepath = __DIR__.'/products.csv';
         copy(__DIR__.'/../../../../../Fixtures/products.csv', $this->filepath); // 削除されてしまうのでコピーしておく
 
@@ -179,7 +182,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             $actualIds = [];
             /** @var Product $Product */
             foreach ($Product->getProductCategories() as $ProductCategory) {
-                /* @var \Eccube\Entity\ProductCategory $ProductCategory */
+                /* @var ProductCategory $ProductCategory */
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
                 $this->actual = $ProductCategory->getCategoryId();
@@ -352,7 +355,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             // expected categories is
             $expectedIds = $this->getExpectedCategoriesIdList($csvCat[$nameHash]);
             $actualIds = [];
-            /** @var \Eccube\Entity\ProductCategory $ProductCategory */
+            /** @var ProductCategory $ProductCategory */
             foreach ($Product->getProductCategories() as $ProductCategory) {
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
@@ -567,9 +570,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     {
         $this->filepath = __DIR__.'/categories.csv';
         copy(__DIR__.'/../../../../../Fixtures/categories.csv', $this->filepath); // 削除されてしまうのでコピーしておく
-
-        /** @var Generator $faker */
-        $faker = $this->getFaker();
+        /* @var Generator $faker */
+        $this->getFaker();
         $categoryName = 'CategoryNameTest';
         $csv = [
             ['カテゴリ名', 'カテゴリID'],
@@ -644,7 +646,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             $actualIds = [];
             /** @var Product $Product */
             foreach ($Product->getProductCategories() as $ProductCategory) {
-                /* @var \Eccube\Entity\ProductCategory $ProductCategory */
+                /* @var ProductCategory $ProductCategory */
                 $actualIds[$ProductCategory->getCategoryId()] = $ProductCategory->getCategoryId();
                 $this->expected = $expectedIds[$ProductCategory->getCategoryId()];
                 $this->actual = $ProductCategory->getCategoryId();
@@ -808,7 +810,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param string $bind
      * @param string $original_name
      *
-     * @return \Symfony\Component\DomCrawler\Crawler
+     * @return Crawler
      */
     protected function scenario($bind = 'admin_product_csv_import', $original_name = 'products.csv', $isXmlHttpRequest = false)
     {
@@ -820,7 +822,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             true                // test mode
         );
 
-        $crawler = $this->client->request(
+        return $this->client->request(
             'POST',
             $this->generateUrl($bind),
             [
@@ -832,8 +834,6 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
             ['admin_csv_import' => ['import_file' => $file]],
             $isXmlHttpRequest ? ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'] : []
         );
-
-        return $crawler;
     }
 
     private function getExpectedCategoriesIdList($categoriesStr)
