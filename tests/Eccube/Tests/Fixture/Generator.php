@@ -21,11 +21,19 @@ use Eccube\Entity\Delivery;
 use Eccube\Entity\DeliveryFee;
 use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\LoginHistory;
+use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\Job;
 use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Master\ProductStatus;
+use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
+use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
@@ -51,10 +59,10 @@ use Eccube\Repository\PageRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Repository\TaxRuleRepository;
-use Eccube\Security\Core\Encoder\PasswordEncoder;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\StringUtil;
+use Faker\Factory;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -176,7 +184,7 @@ class Generator
         TaxRuleRepository $taxRuleRepository,
         PurchaseFlow $orderPurchaseFlow,
         RequestStack $requestStack,
-        $locale = 'ja_JP'
+        $locale = 'ja_JP',
     ) {
         $this->locale = $locale;
         $this->entityManager = $entityManager;
@@ -202,7 +210,7 @@ class Generator
      *
      * @param string $username . null の場合は, ランダムなユーザーIDが生成される.
      *
-     * @return \Eccube\Entity\Member
+     * @return Member
      */
     public function createMember($username = null)
     {
@@ -216,9 +224,9 @@ class Generator
         } else {
             $loginId = $username;
         }
-        $Work = $this->entityManager->find(\Eccube\Entity\Master\Work::class, 1);
-        $Authority = $this->entityManager->find(\Eccube\Entity\Master\Authority::class, 0);
-        $Creator = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
+        $Work = $this->entityManager->find(Work::class, 1);
+        $Authority = $this->entityManager->find(Authority::class, 0);
+        $Creator = $this->entityManager->find(Member::class, 2);
 
         $password = 'password';
         $password = $this->passwordHasher->hashPassword($Member, $password);
@@ -240,7 +248,7 @@ class Generator
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
      *
-     * @return \Eccube\Entity\Customer
+     * @return Customer
      */
     public function createCustomer($email = null)
     {
@@ -253,10 +261,10 @@ class Generator
             } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
-        $Status = $this->entityManager->find(\Eccube\Entity\Master\CustomerStatus::class, CustomerStatus::ACTIVE);
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
-        $Sex = $this->entityManager->find(\Eccube\Entity\Master\Sex::class, $faker->numberBetween(1, 2));
-        $Job = $this->entityManager->find(\Eccube\Entity\Master\Job::class, $faker->numberBetween(1, 18));
+        $Status = $this->entityManager->find(CustomerStatus::class, CustomerStatus::ACTIVE);
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
+        $Sex = $this->entityManager->find(Sex::class, $faker->numberBetween(1, 2));
+        $Job = $this->entityManager->find(Job::class, $faker->numberBetween(1, 18));
 
         $password = $this->passwordHasher->hashPassword($Customer, 'password');
         $Customer
@@ -297,7 +305,7 @@ class Generator
     public function createCustomerAddress(Customer $Customer, $is_nonmember = false)
     {
         $faker = $this->getFaker();
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $CustomerAddress = new CustomerAddress();
         $CustomerAddress
@@ -335,7 +343,7 @@ class Generator
      *
      * @param string $email メールアドレス. null の場合は, ランダムなメールアドレスが生成される.
      *
-     * @return \Eccube\Entity\Customer
+     * @return Customer
      */
     public function createNonMember($email = null)
     {
@@ -348,7 +356,7 @@ class Generator
                 $email = $faker->safeEmail;
             } while ($this->customerRepository->findBy(['email' => $email]));
         }
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
         $Customer
             ->setName01($faker->lastName)
@@ -383,14 +391,14 @@ class Generator
      * @param integer $product_class_num 商品規格の生成数
      * @param bool $with_image 画像を生成する場合 true, 生成しない場合 false
      *
-     * @return \Eccube\Entity\Product
+     * @return Product
      */
     public function createProduct($product_name = null, $product_class_num = 3, $with_image = false)
     {
         $faker = $this->getFaker();
-        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
-        $ProductStatus = $this->entityManager->find(\Eccube\Entity\Master\ProductStatus::class, \Eccube\Entity\Master\ProductStatus::DISPLAY_SHOW);
-        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
+        $Member = $this->entityManager->find(Member::class, 2);
+        $ProductStatus = $this->entityManager->find(ProductStatus::class, ProductStatus::DISPLAY_SHOW);
+        $SaleType = $this->entityManager->find(SaleType::class, 1);
         $DeliveryDurations = $this->durationRepository->findAll();
         $ProductCodesGenerated = [];
 
@@ -406,12 +414,11 @@ class Generator
             ->setUpdateDate(new \DateTime())
             ->setDescriptionList($faker->paragraph())
             ->setDescriptionDetail($faker->realText());
-        $Product->extendedParameter = 'aaaa';
 
         $this->entityManager->persist($Product);
         $this->entityManager->flush();
 
-        $faker2 = \Faker\Factory::create($this->locale);
+        Factory::create($this->locale);
 
         for ($i = 0; $i < 3; $i++) {
             $ProductImage = new ProductImage();
@@ -567,25 +574,25 @@ class Generator
     /**
      * Order オブジェクトを生成して返す.
      *
-     * @param \Eccube\Entity\Customer $Customer Customer インスタンス
+     * @param Customer $Customer Customer インスタンス
      * @param array $ProductClasses 明細行となる ProductClass の配列
-     * @param \Eccube\Entity\Delivery $Delivery Delivery インスタンス
+     * @param Delivery $Delivery Delivery インスタンス
      * @param integer $add_charge Order に加算される手数料
      * @param integer $add_discount Order に加算される値引き額
      * @param integer $statusTypeId OrderStatus:id
      *
-     * @return \Eccube\Entity\Order
+     * @return Order
      */
-    public function createOrder(Customer $Customer, array $ProductClasses = [], Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusTypeId = null)
+    public function createOrder(Customer $Customer, array $ProductClasses = [], ?Delivery $Delivery = null, $add_charge = 0, $add_discount = 0, $statusTypeId = null)
     {
         $faker = $this->getFaker();
         $quantity = $faker->randomNumber(2);
-        $Pref = $this->entityManager->find(\Eccube\Entity\Master\Pref::class, $faker->numberBetween(1, 47));
+        $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Payments = $this->paymentRepository->findAll();
         if ($statusTypeId === null) {
-            $statusTypeId = \Eccube\Entity\Master\OrderStatus::PROCESSING;
+            $statusTypeId = OrderStatus::PROCESSING;
         }
-        $OrderStatus = $this->entityManager->find(\Eccube\Entity\Master\OrderStatus::class, $statusTypeId);
+        $OrderStatus = $this->entityManager->find(OrderStatus::class, $statusTypeId);
         $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);
         $Order->copyProperties($Customer);
@@ -761,11 +768,11 @@ class Generator
      * @param integer $rule_min 下限金額
      * @param integer $rule_max 上限金額
      *
-     * @return \Eccube\Entity\Payment
+     * @return Payment
      */
     public function createPayment(Delivery $Delivery, $method, $charge = 0, $rule_min = 0, $rule_max = 999999999)
     {
-        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
+        $Member = $this->entityManager->find(Member::class, 2);
         $Payment = new Payment();
         $Payment
             ->setMethod($method)
@@ -803,8 +810,8 @@ class Generator
      */
     public function createDelivery($delivery_time_max_pattern = 5)
     {
-        $Member = $this->entityManager->find(\Eccube\Entity\Member::class, 2);
-        $SaleType = $this->entityManager->find(\Eccube\Entity\Master\SaleType::class, 1);
+        $Member = $this->entityManager->find(Member::class, 2);
+        $SaleType = $this->entityManager->find(SaleType::class, 1);
 
         $faker = $this->getFaker();
         $Delivery = new Delivery();
@@ -921,6 +928,6 @@ class Generator
      */
     protected function getFaker()
     {
-        return \Faker\Factory::create($this->locale);
+        return Factory::create($this->locale);
     }
 }
