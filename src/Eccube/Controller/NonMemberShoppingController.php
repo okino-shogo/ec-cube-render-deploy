@@ -60,7 +60,7 @@ class NonMemberShoppingController extends AbstractShoppingController
         ValidatorInterface $validator,
         PrefRepository $prefRepository,
         OrderHelper $orderHelper,
-        CartService $cartService
+        CartService $cartService,
     ) {
         $this->validator = $validator;
         $this->prefRepository = $prefRepository;
@@ -72,6 +72,7 @@ class NonMemberShoppingController extends AbstractShoppingController
      * 非会員処理
      *
      * @Route("/shopping/nonmember", name="shopping_nonmember", methods={"GET", "POST"})
+     *
      * @Template("Shopping/nonmember.twig")
      */
     public function index(Request $request)

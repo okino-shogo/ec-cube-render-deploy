@@ -301,9 +301,8 @@ class OrderPdfService extends Fpdi
         // ショップ名
         $this->lfText(125, 58, $this->baseInfoRepository->getShopName(), 8, 'B');
 
-        //郵便番号
-        $this->lfText(121, 63, "\u{3012}". ' ' . mb_substr($this->baseInfoRepository->getPostalCode(), 0, 3) . ' - ' . mb_substr($this->baseInfoRepository->getPostalCode(), 3, 4), 8);
-
+        // 郵便番号
+        $this->lfText(121, 63, "\u{3012}".' '.mb_substr($this->baseInfoRepository->getPostalCode(), 0, 3).' - '.mb_substr($this->baseInfoRepository->getPostalCode(), 3, 4), 8);
 
         // 都道府県+所在地
         $text = $this->baseInfoRepository->getPref().$this->baseInfoRepository->getAddr01();
@@ -421,7 +420,7 @@ class OrderPdfService extends Fpdi
         $Order = $Shipping->getOrder();
 
         // 購入者郵便番号(3012は郵便マークのUTFコード)
-        $text = "\u{3012}" . ' ' . mb_substr($Shipping->getPostalCode(), 0, 3) . ' - ' . mb_substr($Shipping->getPostalCode(), 3, 4);
+        $text = "\u{3012}".' '.mb_substr($Shipping->getPostalCode(), 0, 3).' - '.mb_substr($Shipping->getPostalCode(), 3, 4);
         $this->lfText(22, 43, $text, 10);
 
         // 購入者都道府県+住所1
@@ -690,7 +689,7 @@ class OrderPdfService extends Fpdi
         $this->SetFont('');
         // Data
         $fill = 0;
-        $writeRow = function($row, $cellHeight, $fill, $isBorder) use($w) {
+        $writeRow = function ($row, $cellHeight, $fill, $isBorder) use ($w) {
             $i = 0;
             $h = 0;
             foreach ($row as $col) {
@@ -720,6 +719,7 @@ class OrderPdfService extends Fpdi
                 $h = $this->getLastH();
                 $i++;
             }
+
             return $cellHeight;
         };
 

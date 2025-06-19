@@ -89,6 +89,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
      * @param string|int $value
      * @param string $expected
      * @param string $message
+     *
      * @dataProvider dataProvider
      */
     public function testSystemLogValidate($value, $expected, $message)

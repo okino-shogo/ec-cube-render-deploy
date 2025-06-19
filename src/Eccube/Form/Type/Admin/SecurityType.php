@@ -151,8 +151,8 @@ class SecurityType extends AbstractType
                     $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
                         'constraints' => [
                             new Assert\Ip(),
-                            new Assert\Cidr()
-                        ]
+                            new Assert\Cidr(),
+                        ],
                     ]));
                     if ($errors->count() > 0) {
                         $form['front_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
@@ -167,8 +167,8 @@ class SecurityType extends AbstractType
                     $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
                         'constraints' => [
                             new Assert\Ip(),
-                            new Assert\Cidr()
-                        ]
+                            new Assert\Cidr(),
+                        ],
                     ]));
                     if ($errors->count() > 0) {
                         $form['front_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ip_and_submask', ['%ip%' => $ip])));
@@ -183,8 +183,8 @@ class SecurityType extends AbstractType
                     $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
                         'constraints' => [
                             new Assert\Ip(),
-                            new Assert\Cidr()
-                        ]
+                            new Assert\Cidr(),
+                        ],
                     ]));
                     if ($errors->count() != 0) {
                         $form['admin_allow_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
@@ -199,8 +199,8 @@ class SecurityType extends AbstractType
                     $errors = $this->validator->validate($ip, new Assert\AtLeastOneOf([
                         'constraints' => [
                             new Assert\Ip(),
-                            new Assert\Cidr()
-                        ]
+                            new Assert\Cidr(),
+                        ],
                     ]));
                     if ($errors->count() != 0) {
                         $form['admin_deny_hosts']->addError(new FormError(trans('admin.setting.system.security.ip_limit_invalid_ipv4', ['%ip%' => $ip])));
@@ -217,6 +217,7 @@ class SecurityType extends AbstractType
 
     /**
      * フロントURL一覧を取得
+     *
      * @return string
      */
     private function getRouteCollection(): string
