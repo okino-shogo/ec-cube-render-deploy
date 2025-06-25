@@ -148,8 +148,8 @@ class Step3Type extends AbstractType
 
                 foreach ($ips as $ip) {
                     $errors = $this->validator->validate($ip, [
-                            new Assert\Ip(),
-                        ]
+                        new Assert\Ip(),
+                    ]
                     );
                     if ($errors->count() != 0) {
                         $form['admin_allow_hosts']->addError(new FormError(trans('install.ip_is_invalid', ['%ip%' => $ip])));

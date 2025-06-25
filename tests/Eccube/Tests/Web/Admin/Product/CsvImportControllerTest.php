@@ -70,7 +70,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     /**
      * CSVを生成するための配列を返す.
      *
-     * @param boolean $has_header ヘッダ行を含める場合 true
+     * @param bool $has_header ヘッダ行を含める場合 true
      *
      * @return array CSVを生成するための配列
      *
