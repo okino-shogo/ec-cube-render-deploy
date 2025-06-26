@@ -217,9 +217,9 @@ class StringUtil
      * 空白と判断する.
      *
      * @param mixed $value チェック対象の変数. 文字型以外も使用できるが、非推奨.
-     * @param boolean $greedy '貧欲'にチェックを行う場合 true, デフォルト false
+     * @param bool $greedy '貧欲'にチェックを行う場合 true, デフォルト false
      *
-     * @return boolean $value が空白と判断された場合 true
+     * @return bool $value が空白と判断された場合 true
      */
     public static function isBlank($value, $greedy = false)
     {

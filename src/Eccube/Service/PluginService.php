@@ -157,7 +157,7 @@ class PluginService
      * @param int    $source
      * @param bool   $notExists
      *
-     * @return boolean
+     * @return bool
      *
      * @throws PluginException
      * @throws \Exception
@@ -642,7 +642,7 @@ class PluginService
      * Proxyを再生成します.
      *
      * @param Plugin $plugin プラグイン
-     * @param boolean $temporary プラグインが無効状態でも一時的に生成するかどうか
+     * @param bool $temporary プラグインが無効状態でも一時的に生成するかどうか
      * @param string|null $outputDir 出力先
      * @param bool $uninstall プラグイン削除の場合はtrue
      *

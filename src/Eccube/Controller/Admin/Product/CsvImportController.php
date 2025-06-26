@@ -1710,7 +1710,7 @@ class CsvImportController extends AbstractCsvImportController
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     protected function hasErrors()
     {
