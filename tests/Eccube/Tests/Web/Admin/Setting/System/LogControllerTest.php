@@ -53,7 +53,7 @@ class LogControllerTest extends AbstractAdminWebTestCase
     protected function tearDown(): void
     {
         parent::tearDown();
-        if (file_exists($this->logTest)) {
+        if (isset($this->logTest) && file_exists($this->logTest)) {
             unlink($this->logTest);
         }
     }

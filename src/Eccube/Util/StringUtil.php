@@ -271,7 +271,7 @@ class StringUtil
             $value = preg_replace('/　/', '', $value);
         }
 
-        $value = trim($value);
+        $value = trim($value ?? '');
         if (strlen($value) > 0) {
             return false;
         }

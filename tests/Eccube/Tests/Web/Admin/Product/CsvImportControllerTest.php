@@ -135,7 +135,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         $fp = fopen($filepath, 'w');
         if ($fp !== false) {
             foreach ($csv as $row) {
-                fputcsv($fp, $row);
+                fputcsv($fp, $row, ',', '"', '\\');
             }
         } else {
             throw new \Exception('create error!');
@@ -247,7 +247,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
         foreach ($Products as $Product) {
             $ProductClasses = $Product->getProductClasses();
             foreach ($ProductClasses as $ProductClass) {
-                if (preg_match('/fork-0[0-9]-new/', $ProductClass->getCode())) {
+                if (preg_match('/fork-0[0-9]-new/', $ProductClass->getCode() ?? '')) {
                     $newCount++;
                 }
             }

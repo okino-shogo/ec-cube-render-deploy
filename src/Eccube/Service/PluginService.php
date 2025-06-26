@@ -392,7 +392,7 @@ class PluginService
     public function deleteDirs($arr)
     {
         foreach ($arr as $dir) {
-            if (file_exists($dir)) {
+            if (isset($dir) && file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
             }

@@ -439,7 +439,7 @@ class DeliveryController extends AbstractController
                 return 0;
             }
 
-            return ($a['min'] < $b['min']) ? -1 : 1;
+            return $a['min'] <=> $b['min'];
         });
 
         return $mergeRules;

@@ -101,8 +101,6 @@ class CsvImportService implements \Iterator, \SeekableIterator, \Countable
      */
     public function __construct(\SplFileObject $file, $delimiter = ',', $enclosure = '"', $escape = '\\')
     {
-        ini_set('auto_detect_line_endings', true);
-
         // stream filter を適用して文字エンコーディングと改行コードの変換を行う
         // see https://github.com/EC-CUBE/ec-cube/issues/5252
         $filters = [

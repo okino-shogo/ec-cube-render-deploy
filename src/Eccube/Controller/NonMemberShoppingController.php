@@ -254,7 +254,11 @@ class NonMemberShoppingController extends AbstractShoppingController
             ]
         );
 
-        $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        if (is_string($data['customer_kana01'])) {
+            $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        } else {
+            $data['customer_kana01'] = '';
+        }
         $errors[] = $this->validator->validate(
             $data['customer_kana01'],
             [
@@ -263,7 +267,11 @@ class NonMemberShoppingController extends AbstractShoppingController
                 new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
             ]
         );
-        $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        if (is_string($data['customer_kana02'])) {
+            $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        } else {
+            $data['customer_kana02'] = '';
+        }
         $errors[] = $this->validator->validate(
             $data['customer_kana02'],
             [
