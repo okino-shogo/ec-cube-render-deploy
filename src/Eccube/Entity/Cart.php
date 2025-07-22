@@ -246,6 +246,8 @@ if (!class_exists('\Eccube\Entity\Cart')) {
 
         /**
          * Alias of getCartItems()
+         *
+         * @return ItemCollection
          */
         public function getItems()
         {
@@ -296,6 +298,8 @@ if (!class_exists('\Eccube\Entity\Cart')) {
 
         /**
          * Alias of getTotalPrice
+         *
+         * @return string
          */
         public function getTotal()
         {
