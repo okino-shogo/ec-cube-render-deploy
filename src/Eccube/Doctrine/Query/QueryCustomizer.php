@@ -26,6 +26,7 @@ interface QueryCustomizer
      * @param QueryBuilder $builder
      * @param array $params
      * @param string $queryKey
+     * @return void
      */
     public function customize(QueryBuilder $builder, $params, $queryKey);
 
