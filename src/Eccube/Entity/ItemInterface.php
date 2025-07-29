@@ -60,7 +60,7 @@ interface ItemInterface
     public function getOrderItemType();
 
     /**
-     * @return ProductClass
+     * @return ?ProductClass
      */
     public function getProductClass();
 
