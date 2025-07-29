@@ -111,7 +111,7 @@ class CacheUtil implements EventSubscriberInterface
     /**
      * Doctrineのキャッシュを削除します.
      *
-     * @return string
+     * @return string|null
      *
      * @throws \Exception
      */
@@ -120,7 +120,7 @@ class CacheUtil implements EventSubscriberInterface
         /** @var Psr6CacheClearer $poolClearer */
         $poolClearer = $this->container->get('cache.global_clearer');
         if (!$poolClearer->hasPool(self::DOCTRINE_APP_CACHE_KEY)) {
-            return;
+            return null;
         }
 
         $console = new Application($this->kernel);
