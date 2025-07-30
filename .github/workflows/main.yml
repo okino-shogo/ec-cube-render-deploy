@@ -16,6 +16,8 @@ on:
 jobs:
   phpstan:
     uses: ./.github/workflows/phpstan.yml
+  php-cs-fixer:
+    uses: ./.github/workflows/php-cs-fixer.yml
   unit-test:
     needs: [ phpstan ]
     uses: ./.github/workflows/unit-test.yml

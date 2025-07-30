@@ -1,13 +1,7 @@
 name: PHP CS Fixer
 
-#on:
-#  workflow_call:
-
 on:
-  push:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
 
 jobs:
   php-cs-fixer:
@@ -15,19 +9,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: "Checkout"
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: nanasess/setup-php@master
         with:
           php-version: '8.1'
-          coverage: none
 
-      - name: Install dependencies
-        run: composer install
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
       - name: Run php-cs-fixer (dry-run)
         # ─── 差分があるとステップごと失敗させる ───
