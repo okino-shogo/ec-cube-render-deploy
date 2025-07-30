@@ -12,8 +12,8 @@
  */
 
 namespace Eccube\Entity;
-use Eccube\Service\PurchaseFlow\ItemCollection;
 
+use Eccube\Service\PurchaseFlow\ItemCollection;
 
 interface ItemHolderInterface
 {
