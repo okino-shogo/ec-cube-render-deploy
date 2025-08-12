@@ -111,7 +111,7 @@ class ProductType extends AbstractType
 
             // 詳細な説明
             ->add('Tag', EntityType::class, [
-                'class' => 'Eccube\Entity\Tag',
+                'class' => \Eccube\Entity\Tag::class,
                 'query_builder' => function ($er) {
                     return $er->createQueryBuilder('t')
                     ->orderBy('t.sort_no', 'DESC');

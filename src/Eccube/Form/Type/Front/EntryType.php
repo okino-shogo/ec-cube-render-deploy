@@ -130,7 +130,7 @@ class EntryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Customer',
+            'data_class' => Customer::class,
         ]);
     }
 

@@ -74,7 +74,7 @@ return RectorConfig::configure()
                MixedTypeRector::class,// mixed を付与することだけではなく、@param行が冗長と判断された場合は削除するため除外
                ClosureToArrowFunctionRector::class, // アロー関数への変換は一旦スキップ
                // TODO:こちらを段々と適応します
-               StringClassNameToClassConstantRector::class, // クラス名を文字列で指定している箇所は、クラス定数に変換する
+               //StringClassNameToClassConstantRector::class, // クラス名を文字列で指定している箇所は、クラス定数に変換する
                StringableForToStringRector::class, // __toString() メソッドを返り値の型付き（: string）にする
                TernaryToNullCoalescingRector::class, // 三項演算子をnull合体演算子に変換する
                TernaryToElvisRector::class, // 三項演算子をエルビス演算子に変換する

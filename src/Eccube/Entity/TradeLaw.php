@@ -15,7 +15,7 @@ namespace Eccube\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-if (!class_exists('\Eccube\Entity\TradeLaw')) {
+if (!class_exists(TradeLaw::class)) {
     /**
      * TradeLaw
      *
