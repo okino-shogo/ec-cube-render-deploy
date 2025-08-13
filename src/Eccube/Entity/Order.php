@@ -22,7 +22,7 @@ use Eccube\Service\Calculator\OrderItemCollection;
 use Eccube\Service\PurchaseFlow\ItemCollection;
 use Eccube\Service\TaxRuleService;
 
-if (!class_exists('\Eccube\Entity\Order')) {
+if (!class_exists(Order::class)) {
     /**
      * Order
      *
