@@ -238,7 +238,7 @@ class OrderType extends AbstractType
             ->add($builder->create('Customer', HiddenType::class)
                 ->addModelTransformer(new DataTransformer\EntityToIdTransformer(
                     $this->entityManager,
-                    '\Eccube\Entity\Customer'
+                    \Eccube\Entity\Customer::class
                 )));
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'sortOrderItems']);
