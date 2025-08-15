@@ -88,7 +88,7 @@ class CsvController extends AbstractController
             'csv_not_output',
             EntityType::class,
             [
-                'class' => 'Eccube\Entity\Csv',
+                'class' => \Eccube\Entity\Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,
@@ -106,7 +106,7 @@ class CsvController extends AbstractController
             'csv_output',
             EntityType::class,
             [
-                'class' => 'Eccube\Entity\Csv',
+                'class' => \Eccube\Entity\Csv::class,
                 'choice_label' => 'disp_name',
                 'required' => false,
                 'expanded' => false,
