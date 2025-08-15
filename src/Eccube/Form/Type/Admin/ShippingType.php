@@ -159,7 +159,7 @@ class ShippingType extends AbstractType
             ])
             ->add('Delivery', EntityType::class, [
                 'required' => false,
-                'class' => 'Eccube\Entity\Delivery',
+                'class' => Delivery::class,
                 'choice_label' => function (Delivery $Delivery) {
                     return $Delivery->isVisible()
                         ? $Delivery->getServiceName()
@@ -241,7 +241,7 @@ class ShippingType extends AbstractType
 
                 // お届け時間を配送業者で絞り込み
                 $form->add('DeliveryTime', EntityType::class, [
-                    'class' => 'Eccube\Entity\DeliveryTime',
+                    'class' => DeliveryTime::class,
                     'choice_label' => function (DeliveryTime $DeliveryTime) {
                         return $DeliveryTime->isVisible()
                             ? $DeliveryTime->getDeliveryTime()
@@ -282,7 +282,7 @@ class ShippingType extends AbstractType
                 // お届け時間を配送業者で絞り込み
                 $form->remove('DeliveryTime');
                 $form->add('DeliveryTime', EntityType::class, [
-                    'class' => 'Eccube\Entity\DeliveryTime',
+                    'class' => DeliveryTime::class,
                     'choice_label' => 'delivery_time',
                     'placeholder' => 'common.select__unspecified',
                     'required' => false,
@@ -344,7 +344,7 @@ class ShippingType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Shipping',
+            'data_class' => Shipping::class,
         ]);
     }
 
