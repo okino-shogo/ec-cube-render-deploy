@@ -425,11 +425,11 @@ class InstallControllerTest extends AbstractWebTestCase
         ];
         $appData = $this->controller->createAppData($params, $this->entityManager);
 
-        $this->assertEquals('http://example.com', $appData['site_url']);
-        $this->assertEquals('example shop', $appData['shop_name']);
-        $this->assertEquals(Constant::VERSION, $appData['cube_ver']);
-        $this->assertEquals(phpversion(), $appData['php_ver']);
-        $this->assertEquals(php_uname(), $appData['os_type']);
+        $this->assertSame('http://example.com', $appData['site_url']);
+        $this->assertSame('example shop', $appData['shop_name']);
+        $this->assertSame(Constant::VERSION, $appData['cube_ver']);
+        $this->assertSame(phpversion(), $appData['php_ver']);
+        $this->assertSame(php_uname(), $appData['os_type']);
         $this->assertMatchesRegularExpression('/(sqlite|mysql|postgresql).[0-9.]+/', $appData['db_ver']);
     }
 

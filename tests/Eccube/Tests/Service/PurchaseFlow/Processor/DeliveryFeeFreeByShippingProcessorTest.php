@@ -58,7 +58,7 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertEquals(1000, $DeliveryFee->getTotalPrice());
+        self::assertSame(1000, $DeliveryFee->getTotalPrice());
     }
 
     /**
@@ -160,8 +160,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertEquals(0, $Shipping1DeliveryFee->getTotalPrice());
-        self::assertEquals(1000, $Shipping2DeliveryFee->getTotalPrice());
+        self::assertSame(0, $Shipping1DeliveryFee->getTotalPrice());
+        self::assertSame(1000, $Shipping2DeliveryFee->getTotalPrice());
     }
 
     /**
@@ -191,8 +191,8 @@ class DeliveryFeeFreeByShippingProcessorTest extends EccubeTestCase
 
         $processor->process($Order, new PurchaseContext());
 
-        self::assertEquals(1000, $Shipping1DeliveryFee->getTotalPrice());
-        self::assertEquals(0, $Shipping2DeliveryFee->getTotalPrice());
+        self::assertSame(1000, $Shipping1DeliveryFee->getTotalPrice());
+        self::assertSame(0, $Shipping2DeliveryFee->getTotalPrice());
     }
 
     private function newBaseInfo($deliveryFeeAmount, $deliveryFeeQuantity)

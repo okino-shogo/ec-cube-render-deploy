@@ -196,13 +196,13 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableTotal()
     {
         $Order = $this->createTestOrder();
-        self::assertEquals(790187, $Order->getTaxableTotal());
+        self::assertSame(790187, $Order->getTaxableTotal());
     }
 
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
-        self::assertEquals([10 => 724431, 8 => 65756], $Order->getTaxableTotalByTaxRate());
+        self::assertSame([10 => 724431, 8 => 65756], $Order->getTaxableTotalByTaxRate());
     }
 
     public function testGetTaxableDiscountItems()
@@ -214,7 +214,7 @@ class OrderTest extends EccubeTestCase
     public function testGetTaxableDiscount()
     {
         $Order = $this->createTestOrder();
-        self::assertEquals(-94694, $Order->getTaxableDiscount());
+        self::assertSame(-94694, $Order->getTaxableDiscount());
     }
 
     public function testGetTaxFreeDiscountItems()

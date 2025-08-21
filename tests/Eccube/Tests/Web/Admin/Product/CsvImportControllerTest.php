@@ -1133,7 +1133,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         $json = \json_decode($response->getContent(), true);
         $this->assertTrue($json['success']);
-        $this->assertEquals('2行目〜2行目を登録しました', $json['success_message']);
+        $this->assertSame('2行目〜2行目を登録しました', $json['success_message']);
     }
 
     public function testCleanupCsv()

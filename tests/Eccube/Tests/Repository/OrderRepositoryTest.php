@@ -88,7 +88,7 @@ class OrderRepositoryTest extends EccubeTestCase
     public function testGetShippings()
     {
         $this->assertInstanceOf(\Doctrine\Common\Collections\Collection::class, $this->Order->getShippings());
-        $this->assertEquals(1, $this->Order->getShippings()->count());
+        $this->assertSame(1, $this->Order->getShippings()->count());
     }
 
     public function testUpdateOrderSummary()
@@ -108,8 +108,8 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->orderRepository->updateOrderSummary($Customer);
         self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
         self::assertSame($Order1->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertEquals(1, $Customer->getBuyTimes());
-        self::assertEquals($Order1->getTotal(), $Customer->getBuyTotal());
+        self::assertSame(1, $Customer->getBuyTimes());
+        self::assertSame($Order1->getTotal(), $Customer->getBuyTotal());
 
         $Order2 = $this->createOrder($Customer);
         $Order2->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -118,7 +118,7 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->orderRepository->updateOrderSummary($Customer);
         self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
         self::assertSame($Order2->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertEquals(2, $Customer->getBuyTimes());
+        self::assertSame(2, $Customer->getBuyTimes());
         self::assertEquals($Order1->getTotal() + $Order2->getTotal(), $Customer->getBuyTotal());
     }
 

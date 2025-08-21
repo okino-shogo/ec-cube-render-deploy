@@ -236,7 +236,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
 
         // check database
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertEquals($taxRate, $taxRule->getTaxRate());
+        $this->assertSame($taxRate, $taxRule->getTaxRate());
     }
 
     /**
@@ -362,7 +362,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertEquals(0, $taxRule->getTaxRate());
+        $this->assertSame(0, $taxRule->getTaxRate());
     }
 
     /**

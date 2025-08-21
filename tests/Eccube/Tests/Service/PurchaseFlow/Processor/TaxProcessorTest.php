@@ -80,8 +80,8 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame(1080, $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -99,8 +99,8 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1100, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame(1100, $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -118,8 +118,8 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame(1080, $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -163,7 +163,7 @@ class TaxProcessorTest extends EccubeTestCase
         /** @var OrderItem[] $ProductOrderItems */
         $ProductOrderItems = $Order->getProductOrderItems();
 
-        self::assertEquals(1, count($ProductOrderItems));
-        self::assertEquals(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame(1, count($ProductOrderItems));
+        self::assertSame(1080, $ProductOrderItems[0]->getTotalPrice());
     }
 }

@@ -56,7 +56,7 @@ class AbstractEntityTest extends EccubeTestCase
         $this->objEntity = new TestEntity($arrProps);
         $expected = $arrProps;
         $actual = $this->objEntity->toArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testSetPropertiesFromArray()
@@ -114,7 +114,7 @@ class AbstractEntityTest extends EccubeTestCase
         $this->assertEquals($this->objEntity->getTestField4(), 5);
         $expected = $arrProps;
         $actual = $this->objEntity->toArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testChildrens()
@@ -175,7 +175,7 @@ class AbstractEntityTest extends EccubeTestCase
             ['childField' => 'child3'],
         ];
         $actual = $this->objEntity->toNormalizedArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testChildrensWithToJSON()
@@ -209,7 +209,7 @@ class AbstractEntityTest extends EccubeTestCase
         ];
         $actual = $this->objEntity->toJSON();
 
-        $this->assertEquals($expected, json_decode($actual, true));
+        $this->assertSame($expected, json_decode($actual, true));
     }
 
     public function testChildrensWithToXML()
@@ -264,7 +264,7 @@ class AbstractEntityTest extends EccubeTestCase
 
         $expected = $arrProps;
         $actual = $destEntity->toArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testExcludeAttribute()
