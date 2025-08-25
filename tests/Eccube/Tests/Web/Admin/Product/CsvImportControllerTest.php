@@ -330,7 +330,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
 
         // del_flg = 0 の行の確認
         $this->expected = true;
-        $this->actual = $result[1]['visible'];
+        $this->actual = (bool) $result[1]['visible']; // SQLite3, MySQL だと 1 になるためキャストする
         $this->verify('result[1] は visible = true');
 
         $this->expected = 3;
@@ -772,7 +772,7 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
     public function dataDeliveryFeeProvider()
     {
         return [
-            [true, 5000],   // 送料オプション有効時は更新
+            [true, '5000'],   // 送料オプション有効時は更新
             [false, null],  // 送料オプション無効時はスキップ
         ];
     }
@@ -904,6 +904,8 @@ class CsvImportControllerTest extends AbstractAdminWebTestCase
      * @param $postTaxRate
      *
      * @throws \Exception
+     *
+     * @group decimal
      */
     public function testImportTaxRule($optionTaxRule, $preTaxRate, $postTaxRate)
     {

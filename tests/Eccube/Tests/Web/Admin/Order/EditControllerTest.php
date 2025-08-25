@@ -225,6 +225,9 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertStringNotContainsString("<script>alert('XSS Attack')</script>", $testNewsArea->outerHtml());
     }
 
+    /**
+     * @group decimal
+     */
     public function testOrderCustomerInfo()
     {
         $Customer = $this->createCustomer();
@@ -438,6 +441,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注編集時に、dtb_order.taxの値が正しく保存されているかどうかのテスト
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/1606
+     *
+     * @group decimal
      */
     public function testOrderProcessingWithTax()
     {

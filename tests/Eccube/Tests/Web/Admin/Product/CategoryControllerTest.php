@@ -294,6 +294,8 @@ class CategoryControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         $MovedCategory = $this->categoryRepository->find($Category->getId());
+
+        $this->entityManager->refresh($MovedCategory); // Refresh しないとリクエストの値(string)が入ってしまう
         $this->expected = 10;
         $this->actual = $MovedCategory->getSortNo();
         $this->verify();

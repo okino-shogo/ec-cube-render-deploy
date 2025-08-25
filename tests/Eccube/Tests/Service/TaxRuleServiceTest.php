@@ -50,6 +50,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->taxRuleService = static::getContainer()->get(TaxRuleService::class);
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByCalcRuleWithDefault()
     {
         $input = 100.4;
@@ -73,6 +76,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByRoundingTypeWithCeil()
     {
         $input = 100.4;
@@ -96,6 +102,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByRoundingTypeWithRound()
     {
         $input = 100.4;
@@ -119,6 +128,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testRoundByRoundingTypeWithFloor()
     {
         $input = 100.4;
@@ -142,6 +154,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcTax()
     {
         $input = 1000;
@@ -151,6 +166,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcTaxWithAdjust()
     {
         $input = 1008;
@@ -161,6 +179,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTax()
     {
         $input = 1000;
@@ -169,6 +190,9 @@ class TaxRuleServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcIncTax()
     {
         $input = 1000;

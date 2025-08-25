@@ -216,7 +216,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'database' => 'pdo_mysql',
             'database_name' => 'cube4_dev',
             'database_host' => 'localhost',
-            'database_port' => '3306',
+            'database_port' => 3306,
             'database_user' => 'root',
             'database_password' => 'password',
         ];
@@ -343,6 +343,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'auth_mode' => null,
             'smtp_username' => null,
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://localhost:587';
@@ -356,6 +357,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'auth_mode' => null,
             'smtp_username' => null,
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://username:password@localhost:587';
@@ -369,6 +371,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => null,
             'auth_mode' => 'plain',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://username:password@localhost:587?auth_mode=login';
@@ -382,6 +385,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => null,
             'auth_mode' => 'login',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'smtp://username:password@localhost:587?auth_mode=plain&encryption=tls';
@@ -395,6 +399,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => 'tls',
             'auth_mode' => 'plain',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
 
         $url = 'gmail://username@gmail.com:password@smtp.gmail.com:465?auth_mode=login&encryption=ssl';
@@ -408,6 +413,7 @@ class InstallControllerTest extends AbstractWebTestCase
             'encryption' => 'ssl',
             'auth_mode' => 'login',
         ];
+        ksort($this->expected, SORT_STRING);
         $this->verify();
     }
 

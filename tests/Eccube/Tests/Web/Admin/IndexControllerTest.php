@@ -56,6 +56,8 @@ class IndexControllerTest extends AbstractAdminWebTestCase
      * @param int $hour
      *
      * @dataProvider indexWithSalesProvider
+     *
+     * @group decimal
      */
     public function testIndexWithSales($hour)
     {
