@@ -145,7 +145,7 @@ class PluginServiceTest extends AbstractServiceTestCase
 
         // アンインストールできるか
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['code' => $tmpname]));
-        $this->assertSame(Constant::DISABLED, $plugin->isEnabled());
+        $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled());
         $this->assertTrue($this->service->uninstall($plugin));
     }
 
@@ -329,14 +329,14 @@ EOD;
         // 正しくインストールでき、enableのハンドラが呼ばれないことを確認
         $this->assertTrue($this->service->install($tmpfile));
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
-        $this->assertSame(Constant::DISABLED, $plugin->isEnabled()); // インストール直後にプラグインがdisableになっているか
+        $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled()); // インストール直後にプラグインがdisableになっているか
         try {
             $this->assertTrue($this->service->enable($plugin)); // enableにしようとするが、例外発生
         } catch (\Exception $e) {
         }
         $this->entityManager->detach($plugin);
         $this->assertTrue((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
-        $this->assertSame(Constant::DISABLED, $plugin->isEnabled()); // プラグインがdisableのままになっていることを確認
+        $this->assertSame(Constant::DISABLED, (int) $plugin->isEnabled()); // プラグインがdisableのままになっていることを確認
     }
 
     // インストーラを含むプラグインが正しくインストールできるか
@@ -700,7 +700,7 @@ EOD;
 
         $config = $this->service->readConfig($pluginDir);
 
-        self::assertSame('0', $config['source']);
+        self::assertSame(0, $config['source']);
     }
 
     /**

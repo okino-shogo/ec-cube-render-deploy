@@ -73,7 +73,7 @@ class TradeLawControllerTest extends AbstractAdminWebTestCase
 
         // Ensure initial value descriptions are empty
         $inputFieldsDescription->each(function ($inputFieldName) {
-            $this->assertSame('', $inputFieldName->attr('value'));
+            $this->assertNull($inputFieldName->attr('value'));
         });
     }
 

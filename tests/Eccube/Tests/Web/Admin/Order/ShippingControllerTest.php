@@ -264,6 +264,8 @@ class ShippingControllerTest extends AbstractEditControllerTestCase
      * 発送管理で追加した商品明細の税額が計算されている
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4193
+     *
+     * @group decimal
      */
     public function testCalculateTax()
     {

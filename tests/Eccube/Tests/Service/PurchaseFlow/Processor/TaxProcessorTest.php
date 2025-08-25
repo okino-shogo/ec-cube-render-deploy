@@ -73,6 +73,9 @@ class TaxProcessorTest extends EccubeTestCase
         $this->entityManager->flush();
     }
 
+    /**
+     * @group decimal
+     */
     public function testCalcTax()
     {
         $this->processor->process($this->Order, new PurchaseContext());
@@ -86,6 +89,8 @@ class TaxProcessorTest extends EccubeTestCase
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4236
+     *
+     * @group decimal
      */
     public function testTaxRateChangedShoppingFlow()
     {
@@ -105,6 +110,8 @@ class TaxProcessorTest extends EccubeTestCase
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4269
+     *
+     * @group decimal
      */
     public function testTaxRateChangedOrderFlow()
     {
@@ -124,6 +131,8 @@ class TaxProcessorTest extends EccubeTestCase
 
     /**
      * @see https://github.com/EC-CUBE/ec-cube/issues/4330
+     *
+     * @group decimal
      */
     public function testProductTaxRule()
     {

@@ -193,12 +193,18 @@ class OrderTest extends EccubeTestCase
         }
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTaxableTotal()
     {
         $Order = $this->createTestOrder();
         self::assertSame(790187, $Order->getTaxableTotal());
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTaxableTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
@@ -211,6 +217,9 @@ class OrderTest extends EccubeTestCase
         self::assertCount(2, $Order->getTaxableDiscountItems());
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTaxableDiscount()
     {
         $Order = $this->createTestOrder();
@@ -227,6 +236,9 @@ class OrderTest extends EccubeTestCase
         }
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTaxFreeDiscount()
     {
         $Order = $this->createTestOrder();
@@ -234,6 +246,9 @@ class OrderTest extends EccubeTestCase
         self::assertSame(-7159, $Order->getTaxFreeDiscount());
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTotalByTaxRate()
     {
         $Order = $this->createTestOrder();
@@ -242,6 +257,9 @@ class OrderTest extends EccubeTestCase
         self::assertSame(717868.0, $Order->getTotalByTaxRate()[10], '10%対象値引き後合計');
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTaxByTaxRate()
     {
         $Order = $this->createTestOrder();

@@ -91,6 +91,9 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->assertSame(1, $this->Order->getShippings()->count());
     }
 
+    /**
+     * @group decimal
+     */
     public function testUpdateOrderSummary()
     {
         $Customer = $this->createCustomer();

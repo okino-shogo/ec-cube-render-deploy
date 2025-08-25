@@ -60,7 +60,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
 
         $this->assertSame(
             [
-                'id' => 6,
+                'id' => '6',
                 'number' => '456',
                 'description' => 'Another description',
             ],

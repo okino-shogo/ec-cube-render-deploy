@@ -345,7 +345,7 @@ class CartValidationTest extends AbstractWebTestCase
 
         $this->assertStringContainsString('一度に在庫数を超える購入はできません。', $message);
 
-        self::assertSame($stock, $crawler->filter('.ec-cartRow__amount')->text(), '在庫数分だけカートに入っているはず');
+        self::assertSame($stock, (int) $crawler->filter('.ec-cartRow__amount')->text(), '在庫数分だけカートに入っているはず');
     }
 
     /**
@@ -645,7 +645,7 @@ class CartValidationTest extends AbstractWebTestCase
         $this->assertStringContainsString('「'.$this->getProductName($ProductClass).'」は販売制限しております。', $message);
         $this->assertStringContainsString('一度に販売制限数を超える購入はできません。', $message);
 
-        self::assertSame($limit, $crawler->filter('.ec-cartRow__amount')->text());
+        self::assertSame($limit, (int) $crawler->filter('.ec-cartRow__amount')->text());
     }
 
     /**

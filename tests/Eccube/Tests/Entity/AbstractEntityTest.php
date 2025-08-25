@@ -32,8 +32,8 @@ class AbstractEntityTest extends EccubeTestCase
         $arrProps = [
             'field1' => 1,
             'field2' => 2,
-            'field3' => 3,
             'testField4' => 4,
+            'field3' => 3,
         ];
         $this->objEntity = new TestEntity($arrProps);
         $this->assertTrue(is_object($this->objEntity));
@@ -103,8 +103,8 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => 4,
             'testField4' => 5,
+            'field4' => 4,
         ];
         $this->objEntity = new TestExtendsEntity($arrProps);
         $this->assertEquals($this->objEntity->getField1(), 1);
@@ -156,8 +156,8 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => $Date,
             'testField4' => 5,
+            'field4' => $Date,
             'TestChildrens' => $TestChildrens,
         ];
 
@@ -189,8 +189,8 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => $Date,
             'testField4' => 5,
+            'field4' => $Date,
             'TestChildrens' => $TestChildrens,
         ];
 
@@ -248,8 +248,8 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => 4,
             'testField4' => 5,
+            'field4' => 4,
         ];
         $srcEntity = new TestExtendsEntity($arrProps);
         $destEntity = new TestExtendsEntity();

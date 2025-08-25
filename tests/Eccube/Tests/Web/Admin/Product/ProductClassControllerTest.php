@@ -196,6 +196,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class new.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
+     *
+     * @group decimal
      */
     public function testProductClassNewWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {
@@ -328,6 +330,8 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
      * Test product class edit.
      * Test when product tax rule enable.
      * Case: Tax rule is zero.
+     *
+     * @group decimal
      */
     public function testProductClassEditWhenProductTaxRuleEnableAndEditTaxRuleIsZero()
     {

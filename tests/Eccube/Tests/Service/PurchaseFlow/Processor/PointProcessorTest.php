@@ -47,6 +47,9 @@ class PointProcessorTest extends EccubeTestCase
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
     }
 
+    /**
+     * @group decimal
+     */
     public function testUsePointA()
     {
         $Customer = new Customer();
@@ -119,6 +122,8 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @param $usePoint int 利用ポイント
      * @param $isError boolean エラーかどうか
+     *
+     * @group decimal
      */
     public function testUsePointOverPrice($usePoint, $isError)
     {
@@ -155,6 +160,8 @@ class PointProcessorTest extends EccubeTestCase
      *
      * @param $usePoint int 利用ポイント
      * @param $isError boolean エラーかどうか
+     *
+     * @group decimal
      */
     public function testUsePointOverPriceShoppingFlow($usePoint, $isError)
     {
@@ -198,6 +205,8 @@ class PointProcessorTest extends EccubeTestCase
 
     /**
      * @throws PurchaseException
+     *
+     * @group decimal
      */
     public function testReduceCustomerPoint()
     {
@@ -227,6 +236,8 @@ class PointProcessorTest extends EccubeTestCase
      * @param $price int 商品の値段
      * @param $usePoint int 利用ポイント
      * @param $addPoint int 期待する付与ポイント
+     *
+     * @group decimal
      */
     public function testAddPoint($price, $usePoint, $addPoint)
     {
@@ -268,6 +279,8 @@ class PointProcessorTest extends EccubeTestCase
      * @param $price int 商品の値段
      * @param $deliveryFee int
      * @param $addPoint int 期待する付与ポイント
+     *
+     * @group decimal
      */
     public function testAddPointExcludeShippingFee($price, $deliveryFee, $addPoint)
     {
@@ -323,6 +336,8 @@ class PointProcessorTest extends EccubeTestCase
      * @param $pointConversionRate int 商品の値段
      *
      * @throws PurchaseException
+     *
+     * @group decimal
      */
     public function testPointConversionRate($pointConversionRate)
     {
@@ -377,6 +392,8 @@ class PointProcessorTest extends EccubeTestCase
      * @dataProvider basicPointRateProvider
      *
      * @param $basicPointRate int 商品の値段
+     *
+     * @group decimal
      */
     public function testBasicPointRate($basicPointRate)
     {

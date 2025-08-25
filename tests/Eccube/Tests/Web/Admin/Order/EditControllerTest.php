@@ -640,6 +640,8 @@ class EditControllerTest extends AbstractEditControllerTestCase
      * 受注管理で税率を変更できる
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/4269
+     *
+     * @group decimal
      */
     public function testChangeOrderItemTaxRate()
     {
