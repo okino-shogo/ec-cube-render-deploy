@@ -69,7 +69,7 @@ class PointProcessorTest extends EccubeTestCase
         )->first();
 
         self::assertNotNull($OrderItem);
-        self::assertSame(-100, $OrderItem->getPrice());
+        self::assertSame('-100', $OrderItem->getPrice());
     }
 
     /**
