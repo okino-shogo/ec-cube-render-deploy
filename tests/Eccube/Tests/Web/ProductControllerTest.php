@@ -268,7 +268,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $json = json_decode(html_entity_decode($crawler->filter('script[type="application/ld+json"]')->html()));
         $this->assertSame('Product', $json->{'@type'});
         $this->assertSame('チェリーアイスサンド', $json->name);
-        $this->assertSame(3080, $json->offers->price);
+        $this->assertSame(3080.00, $json->offers->price);
         $this->assertSame('InStock', $json->offers->availability);
 
         // 在庫なし商品のテスト

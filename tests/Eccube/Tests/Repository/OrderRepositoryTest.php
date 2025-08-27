@@ -109,9 +109,13 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $this->orderRepository->updateOrderSummary($Customer);
+        // decimal 型の値を正確に反映させるために、flush() 後に再取得する
+        $this->entityManager->flush();
+        $this->entityManager->refresh($Customer);
+        $this->entityManager->refresh($Order1);
         self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
         self::assertSame($Order1->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertSame(1, $Customer->getBuyTimes());
+        self::assertSame('1', $Customer->getBuyTimes());
         self::assertSame($Order1->getTotal(), $Customer->getBuyTotal());
 
         $Order2 = $this->createOrder($Customer);
@@ -119,10 +123,17 @@ class OrderRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $this->orderRepository->updateOrderSummary($Customer);
+        // decimal 型の値を正確に反映させるために、flush() 後に再取得する
+        $this->entityManager->flush();
+        $this->entityManager->refresh($Customer);
+        $this->entityManager->refresh($Order1);
+        $this->entityManager->refresh($Order2);
         self::assertSame($Order1->getOrderDate(), $Customer->getFirstBuyDate());
         self::assertSame($Order2->getOrderDate(), $Customer->getLastBuyDate());
-        self::assertSame(2, $Customer->getBuyTimes());
-        self::assertEquals($Order1->getTotal() + $Order2->getTotal(), $Customer->getBuyTotal());
+        self::assertSame('2', $Customer->getBuyTimes());
+
+        // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
+        self::assertSame(bcadd($Order1->getTotal(), $Order2->getTotal(), 2), bcadd($Customer->getBuyTotal(), '0', 2));
     }
 
     public function testGetQueryBuilderBySearchDataForAdminMulti2147483648()

@@ -221,7 +221,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $crawler = $this->client->submit($form);
 
         // select class category with tax = 0;
-        $taxRate = 0;
+        $taxRate = '0';
         /* @var \Symfony\Component\DomCrawler\Form $form */
         $form = $crawler->selectButton('登録')->form();
         $form['product_class_matrix[product_classes][0][checked]']->tick();
@@ -366,7 +366,7 @@ class ProductClassControllerTest extends AbstractProductCommonTestCase
         $product = $this->productRepository->find($id);
         /* @var TaxRule $taxRule */
         $taxRule = $this->taxRuleRepository->findOneBy(['Product' => $product]);
-        $this->assertSame(0, $taxRule->getTaxRate());
+        $this->assertSame('0', (string) $taxRule->getTaxRate());
     }
 
     /**

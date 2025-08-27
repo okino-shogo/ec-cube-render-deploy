@@ -84,7 +84,7 @@ class TaxProcessorTest extends EccubeTestCase
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
         self::assertSame(1, count($ProductOrderItems));
-        self::assertSame(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -105,7 +105,7 @@ class TaxProcessorTest extends EccubeTestCase
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
         self::assertSame(1, count($ProductOrderItems));
-        self::assertSame(1100, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame('1100.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -126,7 +126,7 @@ class TaxProcessorTest extends EccubeTestCase
         $ProductOrderItems = $this->Order->getProductOrderItems();
 
         self::assertSame(1, count($ProductOrderItems));
-        self::assertSame(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 
     /**
@@ -173,6 +173,6 @@ class TaxProcessorTest extends EccubeTestCase
         $ProductOrderItems = $Order->getProductOrderItems();
 
         self::assertSame(1, count($ProductOrderItems));
-        self::assertSame(1080, $ProductOrderItems[0]->getTotalPrice());
+        self::assertSame('1080.00', $ProductOrderItems[0]->getTotalPrice());
     }
 }

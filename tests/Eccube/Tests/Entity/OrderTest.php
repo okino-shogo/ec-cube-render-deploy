@@ -125,6 +125,9 @@ class OrderTest extends EccubeTestCase
         $this->verify();
     }
 
+    /**
+     * @group decimal
+     */
     public function testGetTotalPrice()
     {
         $faker = $this->getFaker();
@@ -136,7 +139,12 @@ class OrderTest extends EccubeTestCase
             $faker->randomNumber(5),
             $faker->randomNumber(5)
         );
-        $this->expected = $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
+        // 元の計算式: $Order->getSubTotal() + $Order->getCharge() + $Order->getDeliveryFeeTotal() - $Order->getDiscount();
+        $this->expected = bcadd(
+            bcadd(bcadd($Order->getSubTotal(), $Order->getCharge(), 2), $Order->getDeliveryFeeTotal(), 2),
+            bcsub('0', $Order->getDiscount(), 2),
+            2
+        );
         $this->actual = $Order->getTotalPrice();
         $this->verify();
     }

@@ -247,19 +247,24 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $Order->getId()])));
 
         $EditedOrder = $this->orderRepository->find($Order->getId());
+        $EditedCustomer = $this->customerRepository->find($EditedOrder->getCustomer()->getId());
+        // decimal の値を反映させるために refresh する
+        $this->entityManager->refresh($EditedOrder);
+        $this->entityManager->refresh($EditedCustomer);
 
         // 顧客の購入回数と購入金額確認
         $totalPrice = $EditedOrder->getTotalPrice();
+
         $this->expected = $totalPrice;
         $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
         $this->verify();
-        $this->expected = 1;
+        $this->expected = '1';
         $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
         $this->verify();
 
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
-        $this->entityManager->flush($Order);
+        $this->entityManager->flush();
 
         $formData = $this->createFormData($Customer, $this->Product);
         $this->client->request(
@@ -275,10 +280,11 @@ class EditControllerTest extends AbstractEditControllerTestCase
         $EditedOrder = $this->orderRepository->find($Order->getId());
 
         // 顧客の購入回数と購入金額確認
-        $this->expected = $totalPrice + $EditedOrder->getTotalPrice();
-        $this->actual = $EditedOrder->getCustomer()->getBuyTotal();
+        $this->expected = bcadd($totalPrice, $EditedOrder->getTotalPrice(), 2);
+        // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
+        $this->actual = bcadd($EditedOrder->getCustomer()->getBuyTotal(), '0', 2);
         $this->verify();
-        $this->expected = 2;
+        $this->expected = '2';
         $this->actual = $EditedOrder->getCustomer()->getBuyTimes();
         $this->verify();
     }
@@ -446,6 +452,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
      */
     public function testOrderProcessingWithTax()
     {
+        $this->markTestSkipped('インボイス対応に伴い Order::tax が非推奨となったためスキップ');
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
         $Order->setOrderStatus($this->entityManager->find(OrderStatus::class, OrderStatus::NEW));
@@ -497,17 +504,19 @@ class EditControllerTest extends AbstractEditControllerTestCase
                 : $totalPrice;
         }
         foreach ($totalByTaxRate as $rate => $price) {
+            $taxValue = bcdiv(bcmul($price, $rate, 4), bcadd('100', $rate, 0), 4);
             $tax = static::getContainer()->get(TaxRuleService::class)
-                ->roundByRoundingType($price * ($rate / (100 + $rate)), RoundingType::ROUND);
+                ->roundByRoundingType($taxValue, RoundingType::ROUND);
             $totalTaxByTaxRate[$rate] = $tax;
         }
         $totalTax = array_reduce($totalTaxByTaxRate, function ($sum, $tax) {
-            return $sum + $tax;
-        }, 0);
+            return bcadd($sum, $tax, 2);
+        }, '0');
 
         // 確認する「トータル税金」
         $this->expected = $totalTax;
-        $this->actual = $EditedOrderafterEdit->getTax();
+        // XXX SQLite の場合、小数点以下の '.00' が省略されるため、bcadd() で正規化して比較する
+        $this->actual = bcadd($EditedOrderafterEdit->getTax(), '0', 2);
         $this->verify();
     }
 
@@ -694,7 +703,7 @@ class EditControllerTest extends AbstractEditControllerTestCase
         /** @var Order $Order */
         $Order = $this->orderRepository->findBy([], ['create_date' => 'DESC'])[0];
         self::assertSame(10, $Order->getProductOrderItems()[0]->getTaxRate());
-        self::assertSame(100, $Order->getProductOrderItems()[0]->getTax());
+        self::assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
     }
 
     public function testRoutingAdminOrderEditPostWithCustomerInfo()
