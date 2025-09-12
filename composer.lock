@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d59c6aad79b0f17968aec8163e4c388c",
+    "content-hash": "fc95fa2c206edb2879ecb37c0f0f5ed1",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -3750,16 +3750,16 @@
         },
         {
             "name": "nanasess/bcmath-polyfill",
-            "version": "0.0.1",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nanasess/bcmath-polyfill.git",
-                "reference": "e98984769b768ddfa5b86c43fa602bd883f956d1"
+                "reference": "a9a588412501053d1038698575d8f5c642f1eea1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nanasess/bcmath-polyfill/zipball/e98984769b768ddfa5b86c43fa602bd883f956d1",
-                "reference": "e98984769b768ddfa5b86c43fa602bd883f956d1",
+                "url": "https://api.github.com/repos/nanasess/bcmath-polyfill/zipball/a9a588412501053d1038698575d8f5c642f1eea1",
+                "reference": "a9a588412501053d1038698575d8f5c642f1eea1",
                 "shasum": ""
             },
             "require": {
@@ -3770,8 +3770,10 @@
                 "ext-bcmath": "8.1.0"
             },
             "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.86",
+                "phpstan/phpstan": "^2.1",
                 "phpunit/phpunit": "^10.5",
-                "squizlabs/php_codesniffer": "^3.0"
+                "rector/rector": "^2.1"
             },
             "suggest": {
                 "ext-gmp": "Will enable faster math operations"
@@ -3779,7 +3781,8 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "lib/bcmath.php"
+                    "lib/bcmath.php",
+                    "lib/RoundingMode.php"
                 ],
                 "psr-4": {
                     "bcmath_compat\\": "src"
@@ -3814,7 +3817,7 @@
                 "issues": "https://github.com/nanasess/bcmath-polyfill/issues",
                 "source": "https://github.com/nanasess/bcmath-polyfill"
             },
-            "time": "2025-07-16T08:49:48+00:00"
+            "time": "2025-09-11T08:08:41+00:00"
         },
         {
             "name": "nesbot/carbon",
