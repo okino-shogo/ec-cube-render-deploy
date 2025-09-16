@@ -107,7 +107,7 @@ class PointHelper
     {
         $BaseInfo = $this->baseInfoRepository->get();
 
-        return bcfloor(bcdiv($price, $BaseInfo->getPointConversionRate(), 4), 0);
+        return bcfloor(bcdiv($price, $BaseInfo->getPointConversionRate(), 4));
     }
 
     /**
