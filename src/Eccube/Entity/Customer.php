@@ -21,7 +21,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-if (!class_exists('\Eccube\Entity\Customer')) {
+if (!class_exists(Customer::class)) {
     /**
      * Customer
      *
@@ -172,14 +172,14 @@ if (!class_exists('\Eccube\Entity\Customer')) {
          *
          * @ORM\Column(name="buy_times", type="decimal", precision=10, scale=0, nullable=true, options={"unsigned":true,"default":0})
          */
-        private $buy_times = 0;
+        private $buy_times = '0';
 
         /**
          * @var string|null
          *
          * @ORM\Column(name="buy_total", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
          */
-        private $buy_total = 0;
+        private $buy_total = '0';
 
         /**
          * @var string|null
