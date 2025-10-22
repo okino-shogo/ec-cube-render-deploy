@@ -1,0 +1,62 @@
+# PHP 8.2 with Apache for EC-CUBE
+FROM php:8.2-apache
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libzip-dev \
+    libicu-dev \
+    libpq-dev \
+    git \
+    unzip \
+    curl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        gd \
+        pdo \
+        pdo_pgsql \
+        pdo_mysql \
+        zip \
+        intl \
+        opcache \
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Enable Apache modules
+RUN a2enmod rewrite headers expires
+
+# Configure Apache
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy application files
+COPY . .
+
+# Set permissions
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html \
+    && chmod -R 777 /var/www/html/var
+
+# Expose port
+EXPOSE 80
+
+# Run build script during container build
+RUN ./build.sh
+
+# Start command
+CMD ["./start.sh"]
