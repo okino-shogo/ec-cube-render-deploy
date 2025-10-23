@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     curl \
+    wait-for-it \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
         gd \
@@ -38,8 +39,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
 # Enable Apache modules
 RUN a2enmod rewrite headers expires
 
-# Configure Apache
-COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+# Configure PHP
+RUN echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini \
+    && echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/docker-php-uploads.ini \
+    && echo "post_max_size = 20M" >> /usr/local/etc/php/conf.d/docker-php-uploads.ini \
+    && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/docker-php-timeout.ini
 
 # Set working directory
 WORKDIR /var/www/html
@@ -47,16 +51,25 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . .
 
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html \
+# Configure Apache
+COPY apache-config.conf /etc/apache2/sites-available/000-default.conf
+
+# Create required directories and set permissions
+RUN mkdir -p var/cache var/log var/sessions html/upload/save_image html/upload/temp_image \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html \
-    && chmod -R 777 /var/www/html/var
+    && chmod -R 777 /var/www/html/var /var/www/html/html \
+    && chmod +x build.sh start.sh
+
+# Install dependencies
+RUN ./build.sh
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
 
 # Expose port
 EXPOSE 80
-
-# Run build script during container build
-RUN ./build.sh
 
 # Start command
 CMD ["./start.sh"]
