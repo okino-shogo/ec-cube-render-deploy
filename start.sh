@@ -1,35 +1,59 @@
 #!/bin/bash
+
+# Immediate output to ensure logging works
+echo "========================================" 2>&1
+echo "START.SH EXECUTION STARTED" 2>&1
+echo "Timestamp: $(date)" 2>&1
+echo "========================================" 2>&1
+
 # Enable debug mode for troubleshooting
 set -x
+# Note: NOT using set -e because we handle errors explicitly with || true in many places
 
-echo "🚀 Starting EC-CUBE application..."
-echo "Current directory: $(pwd)"
-echo "Files in current directory:"
-ls -la
+echo "🚀 Starting EC-CUBE application..." 2>&1
+echo "Current directory: $(pwd)" 2>&1
+echo "Shell: $SHELL" 2>&1
+echo "User: $(whoami)" 2>&1
+
+# Check if we can list files
+echo "Files in current directory:" 2>&1
+ls -la 2>&1 || echo "Failed to list directory" 2>&1
 
 # Environment check
-echo "📋 Environment variables:"
-echo "DATABASE_URL: ${DATABASE_URL:0:50}..."
-echo "APP_ENV: $APP_ENV"
-echo "ECCUBE_AUTH_MAGIC is set: $([ -n "$ECCUBE_AUTH_MAGIC" ] && echo 'YES' || echo 'NO')"
-
-# Create .env.local if DATABASE_URL is set
+echo "📋 Environment variables:" 2>&1
+echo "DATABASE_URL is set: $([ -n "$DATABASE_URL" ] && echo 'YES' || echo 'NO')" 2>&1
+echo "DATABASE_URL length: ${#DATABASE_URL}" 2>&1
 if [ -n "$DATABASE_URL" ]; then
-    echo "📝 Creating .env.local from environment variables..."
+    echo "DATABASE_URL (first 60 chars): ${DATABASE_URL:0:60}..." 2>&1
+else
+    echo "❌ CRITICAL: DATABASE_URL is not set!" 2>&1
+    echo "Available environment variables:" 2>&1
+    env | grep -E "(DATABASE|APP_|ECCUBE_)" 2>&1 || echo "No relevant env vars found" 2>&1
+    exit 1
+fi
+echo "APP_ENV: ${APP_ENV:-not set}" 2>&1
+echo "APP_SECRET is set: $([ -n "$APP_SECRET" ] && echo 'YES' || echo 'NO')" 2>&1
+echo "ECCUBE_AUTH_MAGIC is set: $([ -n "$ECCUBE_AUTH_MAGIC" ] && echo 'YES' || echo 'NO')" 2>&1
 
-    # Generate APP_SECRET if not set
-    if [ -z "$APP_SECRET" ]; then
-        echo "⚠️  APP_SECRET not set, generating random value..."
-        APP_SECRET=$(openssl rand -hex 32)
-    fi
+# Create .env.local
+echo "📝 Creating .env.local from environment variables..." 2>&1
 
-    # Generate ECCUBE_AUTH_MAGIC if not set
-    if [ -z "$ECCUBE_AUTH_MAGIC" ]; then
-        echo "⚠️  ECCUBE_AUTH_MAGIC not set, generating random value..."
-        ECCUBE_AUTH_MAGIC=$(openssl rand -hex 16)
-    fi
+# Generate APP_SECRET if not set
+if [ -z "$APP_SECRET" ]; then
+    echo "⚠️  APP_SECRET not set, generating random value..." 2>&1
+    APP_SECRET=$(openssl rand -hex 32)
+    echo "Generated APP_SECRET (length: ${#APP_SECRET})" 2>&1
+fi
 
-    cat > .env.local << EOF
+# Generate ECCUBE_AUTH_MAGIC if not set
+if [ -z "$ECCUBE_AUTH_MAGIC" ]; then
+    echo "⚠️  ECCUBE_AUTH_MAGIC not set, generating random value..." 2>&1
+    ECCUBE_AUTH_MAGIC=$(openssl rand -hex 16)
+    echo "Generated ECCUBE_AUTH_MAGIC (length: ${#ECCUBE_AUTH_MAGIC})" 2>&1
+fi
+
+echo "Creating .env.local file..." 2>&1
+cat > .env.local << EOF
 APP_ENV=${APP_ENV:-prod}
 APP_DEBUG=${APP_DEBUG:-0}
 APP_SECRET=$APP_SECRET
@@ -41,11 +65,14 @@ ECCUBE_FORCE_SSL=${ECCUBE_FORCE_SSL:-false}
 DATABASE_URL=$DATABASE_URL
 MAILER_DSN=${MAILER_DSN:-smtp://localhost:1025}
 EOF
-    echo "✅ .env.local created successfully"
-    echo "Content of .env.local (secrets masked):"
-    sed 's/\(APP_SECRET=\).*/\1***MASKED***/' .env.local | sed 's/\(ECCUBE_AUTH_MAGIC=\).*/\1***MASKED***/' | sed 's/\(DATABASE_URL=.*:\/\/[^:]*:\)[^@]*\(@.*\)/\1***MASKED***\2/'
+
+if [ -f ".env.local" ]; then
+    echo "✅ .env.local created successfully" 2>&1
+    echo "File size: $(wc -c < .env.local) bytes" 2>&1
+    echo "Content of .env.local (secrets masked):" 2>&1
+    sed 's/\(APP_SECRET=\).*/\1***MASKED***/' .env.local | sed 's/\(ECCUBE_AUTH_MAGIC=\).*/\1***MASKED***/' | sed 's/\(DATABASE_URL=.*:\/\/[^:]*:\)[^@]*\(@.*\)/\1***MASKED***\2/' 2>&1
 else
-    echo "❌ DATABASE_URL not set! Cannot create .env.local"
+    echo "❌ Failed to create .env.local!" 2>&1
     exit 1
 fi
 
@@ -210,10 +237,14 @@ else
     cat /var/log/apache2/error.log 2>/dev/null || echo "No error log available yet"
 fi
 
-echo "🚀 Starting Apache in foreground..."
-echo "Application should be available on port 80"
-echo "Current user: $(whoami)"
-echo "Apache modules enabled:"
-apachectl -M 2>/dev/null | grep -E "(rewrite|headers|expires)" || true
+echo "🚀 Starting Apache in foreground..." 2>&1
+echo "Application should be available on port 80" 2>&1
+echo "Current user: $(whoami)" 2>&1
+echo "Apache modules enabled:" 2>&1
+apachectl -M 2>&1 | grep -E "(rewrite|headers|expires)" || echo "Module check completed" 2>&1
 
-exec apache2-foreground
+echo "Executing apache2-foreground..." 2>&1
+echo "If you see this message, Apache should start next..." 2>&1
+
+# Use exec to replace shell with Apache process
+exec apache2-foreground 2>&1

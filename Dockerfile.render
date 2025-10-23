@@ -71,5 +71,18 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 # Expose port
 EXPOSE 80
 
+# Create a wrapper script for better debugging
+RUN echo '#!/bin/bash' > /entrypoint.sh && \
+    echo 'echo "========================================" 2>&1' >> /entrypoint.sh && \
+    echo 'echo "CONTAINER STARTING" 2>&1' >> /entrypoint.sh && \
+    echo 'echo "Timestamp: $(date)" 2>&1' >> /entrypoint.sh && \
+    echo 'echo "Working directory: $(pwd)" 2>&1' >> /entrypoint.sh && \
+    echo 'echo "User: $(whoami)" 2>&1' >> /entrypoint.sh && \
+    echo 'echo "start.sh exists: $([ -f ./start.sh ] && echo YES || echo NO)" 2>&1' >> /entrypoint.sh && \
+    echo 'echo "start.sh is executable: $([ -x ./start.sh ] && echo YES || echo NO)" 2>&1' >> /entrypoint.sh && \
+    echo 'echo "========================================" 2>&1' >> /entrypoint.sh && \
+    echo 'exec ./start.sh' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
 # Start command
-CMD ["./start.sh"]
+CMD ["/entrypoint.sh"]
